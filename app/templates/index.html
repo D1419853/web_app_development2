@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - 追劇推薦系統{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">告別劇荒，一秒找到你的命定劇</h1>
+        <p class="col-md-8 fs-4">匯集全球熱門劇集，提供最客觀的觀眾評分與分類推薦。</p>
+        <a href="{{ url_for('main.search', category='懸疑復仇') }}" class="btn btn-danger btn-lg">探索熱門類型</a>
+    </div>
+</div>
+
+<h2 class="mb-4">🔥 熱門推薦 Top 10</h2>
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
+    {% for drama in dramas %}
+    <div class="col">
+        <div class="card h-100 drama-card shadow-sm" onclick="location.href='{{ url_for('main.drama_detail', id=drama.id) }}'">
+            <img src="{{ drama.image_url or 'https://via.placeholder.com/200x300' }}" class="card-img-top" alt="{{ drama.title }}" style="height: 250px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title text-truncate">{{ drama.title }}</h5>
+                <span class="badge rating-badge">⭐ {{ drama.rating }}</span>
+                <p class="card-text mt-2"><small class="text-muted">{{ drama.category }}</small></p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>目前尚無劇集資料。</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ drama.title }} - 詳情 - 追劇推薦系統{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ drama.title }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ drama.image_url or 'https://via.placeholder.com/400x600' }}" class="img-fluid rounded shadow" alt="{{ drama.title }}">
+    </div>
+    <div class="col-md-8">
+        <h1 class="display-4">{{ drama.title }}</h1>
+        <div class="mb-3">
+            <span class="badge bg-primary fs-5">{{ drama.category }}</span>
+            <span class="badge rating-badge fs-5 ms-2">⭐ {{ drama.rating }}</span>
+        </div>
+        
+        <h3 class="mt-4">劇情簡介</h3>
+        <p class="lead">{{ drama.description or '暫無描述。' }}</p>
+
+        <div class="mt-5">
+            {% if is_collected %}
+                <button class="btn btn-secondary btn-lg disabled">已在收藏清單中</button>
+                <form action="{{ url_for('collection.remove_from_collection') }}" method="POST" class="d-inline ms-2">
+                    <input type="hidden" name="drama_id" value="{{ drama.id }}">
+                    <button type="submit" class="btn btn-outline-danger">取消收藏</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('collection.add_to_collection') }}" method="POST">
+                    <input type="hidden" name="drama_id" value="{{ drama.id }}">
+                    <button type="submit" class="btn btn-danger btn-lg">❤️ 加入想看清單</button>
+                </form>
+            {% endif %}
+        </div>
+        
+        <div class="mt-4 text-muted">
+            <small>資料建立於：{{ drama.created_at }}</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

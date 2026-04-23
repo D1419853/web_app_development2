@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}搜尋結果 - 追劇推薦系統{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+    <li class="breadcrumb-item active" aria-current="page">搜尋結果</li>
+  </ol>
+</nav>
+
+<h2 class="mb-4">關於「{{ query }}」的搜尋結果 ({{ dramas|length }})</h2>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for drama in dramas %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="row g-0">
+                <div class="col-4">
+                    <img src="{{ drama.image_url or 'https://via.placeholder.com/100x150' }}" class="img-fluid rounded-start h-100" alt="{{ drama.title }}" style="object-fit: cover;">
+                </div>
+                <div class="col-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">{{ drama.title }}</h5>
+                        <p class="card-text"><small class="text-muted">{{ drama.category }}</small></p>
+                        <p class="card-text">⭐ {{ drama.rating }}</p>
+                        <a href="{{ url_for('main.drama_detail', id=drama.id) }}" class="btn btn-sm btn-outline-danger">查看詳情</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <p class="fs-4 text-muted">抱歉，找不到相關劇集。</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">返回首頁</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
